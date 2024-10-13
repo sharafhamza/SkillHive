@@ -12,11 +12,7 @@ userRouter.post("/signin", (req, res) => {
     message: "Sign in endpoint",
   });
 });
-userRouter.post("/signin", (req, res) => {
-  res.send({
-    message: "Sign in endpoint",
-  });
-});
+userRouter.get("/purchases", userMiddleware, async function (req, res) {});
 
 module.exports = {
   userRouter,
