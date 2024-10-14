@@ -8,10 +8,11 @@ const { courseRouter } = require("./routes/course");
 app.use(express.json());
 
 app.use("/user", userRouter);
+app.use("/admin", adminRouter);
 
 async function main() {
   await mongoose.connect(process.env.MONGO_URL);
-  app.listen(7777);
+  app.listen(3000);
   console.log("connected");
 }
 

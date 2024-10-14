@@ -46,8 +46,8 @@ adminRouter.post("/signin", async (req, res) => {
   }
 });
 
-adminRouter.post("/course", adminMiddleware, async (req, res) => {
-  const creatorId = req.userId;
+adminRouter.post("/course", async (req, res) => {
+  const adminId = req.userId;
   const { title, description, price, imageUrl } = req.body;
 
   const course = await courseModel.findOne({
@@ -55,24 +55,12 @@ adminRouter.post("/course", adminMiddleware, async (req, res) => {
     description: description,
     price: price,
     imageUrl: imageUrl,
+    creatorId: adminId,
   });
-
-  if (admin) {
-    const token = jwt.sign(
-      {
-        id: admin._id,
-      },
-      process.env.JWT_ADMIN_PASSWORD
-    );
-
-    res.json({
-      token: token,
-    });
-  } else {
-    res.status(403).json({
-      message: "Incorrect credentials",
-    });
-  }
+  res.json({
+    message: "Course Created",
+    courseId: course._id,
+  });
 });
 
 module.exports = {
