@@ -1,7 +1,7 @@
 require("dotenv").config();
 const { Router } = require("express");
 const { adminModel, courseModel } = require("../database/dbSchema");
-const adminMiddleware = require("../Middlewares/adminMiddleware");
+const { adminMiddleware } = require("../Middlewares/adminMiddleware");
 const adminRouter = Router();
 const jwt = require("jsonwebtoken");
 
@@ -60,6 +60,40 @@ adminRouter.post("/course", adminMiddleware, async (req, res) => {
   res.json({
     message: "Course Created",
     courseId: course._id,
+  });
+});
+
+adminRouter.put("/course", adminMiddleware, async (req, res) => {
+  const adminId = req.userId;
+  const { title, description, price, imageUrl, courseId } = req.body;
+
+  const course = await courseModel.updateOne(
+    {
+      _id: courseId,
+      creatorId: adminId,
+    },
+    {
+      title: title,
+      description: description,
+      price: price,
+      imageUrl: imageUrl,
+    }
+  );
+  res.json({
+    message: "Course Updated",
+    courseId: course._id,
+  });
+});
+
+adminRouter.get("/course/bulk", adminMiddleware, async (req, res) => {
+  const adminId = req.userId;
+
+  const courses = await courseModel.find({
+    creatorId: adminId,
+  });
+  res.json({
+    message: "All the courses",
+    courses,
   });
 });
 
