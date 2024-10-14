@@ -1,7 +1,7 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
-const adminMiddleware = (req, res, next) => {
+function adminMiddleware(req, res, next) {
   const token = req.headers.token;
   const decoded = jwt.verify(token, process.env.JWT_ADMIN_PASSWORD);
 
@@ -13,7 +13,7 @@ const adminMiddleware = (req, res, next) => {
       message: "You are not signed in",
     });
   }
-};
+}
 
 module.exports = {
   adminMiddleware: adminMiddleware,
