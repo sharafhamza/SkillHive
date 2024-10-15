@@ -46,23 +46,6 @@ adminRouter.post("/signin", async (req, res) => {
   }
 });
 
-adminRouter.post("/course", adminMiddleware, async (req, res) => {
-  const adminId = req.userId;
-  const { title, description, price, imageUrl } = req.body;
-
-  const course = await courseModel.findOne({
-    title: title,
-    description: description,
-    price: price,
-    imageUrl: imageUrl,
-    creatorId: adminId,
-  });
-  res.json({
-    message: "Course Created",
-    courseId: course._id,
-  });
-});
-
 adminRouter.put("/course", adminMiddleware, async (req, res) => {
   const adminId = req.userId;
   const { title, description, price, imageUrl, courseId } = req.body;
